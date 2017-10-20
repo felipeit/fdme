@@ -1,3 +1,5 @@
+mysite/settings.py
+migrations/
 runtime.txt
 Procfile
 findme/templates/

@@ -1,5 +1,7 @@
 mysite/settings.py
-migrations/
+findme/migrations/
+findme/migrations/0001_initial.py
+
 runtime.txt
 Procfile
 findme/templates/

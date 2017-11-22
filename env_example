@@ -1,0 +1,4 @@
+[settings]
+DEBUG=True
+SECRET_KEY=j&+im&kfh7&43jd!8@s+9e*-_-sbqip+y2s-dziv2ja^i8h_uc
+DATABASE_URL=mysql://root:root@localhost/findme

@@ -97,7 +97,7 @@ def longitude(request):
 @login_required
 def latitude(request):
     response = getVariable(request.user)
-    data = respose.get(request.user)
+    data = response.get(request.user)
     json_data = data.decode("utf-8")
     a = json.loads(json.dumps(ast.literal_eval(json_data)))
     latitude = a["latitude"][0]

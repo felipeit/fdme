@@ -1,0 +1,56 @@
+services:
+    rabbitmq:
+        image: "rabbitmq:3-management"
+        container_name: rabbitmq
+        ports:
+            - "5672:5672"
+    database:
+        image: postgres:15.0
+        container_name: database
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        restart: always
+        volumes:
+            - /opt/applications/data_persistence/database/db:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+    api:
+        build: .
+        container_name: api
+        env_file: .env
+        # command: bash -c "python manage.py shell script/create_superuser.py && python manage.py runserver 0.0.0.0:8000"
+        volumes:
+            - .:/application
+        depends_on:
+            - database
+            - rabbitmq
+        links:
+            - database
+            - rabbitmq
+        ports:
+            - "8000:8000"
+    dev_container:
+        build: .
+        container_name: app
+        env_file: .env
+        volumes:
+            - .:/application
+        depends_on:
+            - database
+            - rabbitmq
+        links:
+            - database
+            - rabbitmq
+        expose:
+            - "8000"
+    celery:
+        container_name: celery
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - .:/application
+        depends_on:
+            - rabbitmq
+        command: celery -A core worker --loglevel=info

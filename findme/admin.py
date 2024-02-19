@@ -1,6 +1,6 @@
 from django.contrib import admin
-from django.contrib.auth import get_user_model
-User = get_user_model()
+from findme.models import User, Phone, PaymentPlanType
 
-admin.site.unregister(User)
 admin.site.register(User)
+admin.site.register(Phone)
+admin.site.register(PaymentPlanType)

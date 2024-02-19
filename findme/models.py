@@ -8,3 +8,37 @@
 from __future__ import unicode_literals
 
 from django.db import models
+
+
+class User(models.Model):
+    id = models.UUIDField()
+    first_name = models.CharField()
+    last_name = models.CharField()
+    email = models.EmailField()
+    cpf = models.CharField()
+    cnpj = models.CharField()
+    address = models.CharField()
+    phone_number = models.CharField()
+    active = models.BooleanField(default=True)
+
+
+class Phone(models.Model):
+    id = models.UUIDField()
+    phone_number = models.CharField()
+    imei = models.CharField()
+    model = models.CharField()
+    os = models.CharField()
+    user = models.ForeignKey(User)
+    latitude = models.CharField()
+    longitude = models.CharField()
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+
+
+class PaymentPlanType(models.Model):
+    type = models.CharField()
+    user = models.ForeignKey(User)
+    free_trial = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)

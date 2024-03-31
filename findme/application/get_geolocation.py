@@ -1,0 +1,3 @@
+class GetGeolocation:
+    async def execute(self) -> None:
+        ...

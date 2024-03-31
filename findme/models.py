@@ -11,34 +11,34 @@ from django.db import models
 
 
 class User(models.Model):
-    id = models.UUIDField()
-    first_name = models.CharField()
-    last_name = models.CharField()
-    email = models.EmailField()
-    cpf = models.CharField()
-    cnpj = models.CharField()
-    address = models.CharField()
-    phone_number = models.CharField()
+    id = models.UUIDField(primary_key=True)
+    first_name = models.CharField(max_length=200, blank=False, null=False)
+    last_name = models.CharField(max_length=200, blank=False, null=False)
+    email = models.EmailField(blank=False, null=False)
+    cpf = models.CharField(max_length=11)
+    cnpj = models.CharField(max_length=14)
+    address = models.CharField(max_length=200)
+    phone_number = models.CharField(max_length=12)
     active = models.BooleanField(default=True)
-
+    age = models.IntegerField()
 
 class Phone(models.Model):
-    id = models.UUIDField()
-    phone_number = models.CharField()
-    imei = models.CharField()
-    model = models.CharField()
-    os = models.CharField()
-    user = models.ForeignKey(User)
-    latitude = models.CharField()
-    longitude = models.CharField()
+    id = models.UUIDField(primary_key=True)
+    phone_number = models.CharField(blank=False, null=False)
+    imei = models.CharField(max_length=15, blank=False, null=False)
+    model = models.CharField(max_length=200, blank=True, null=True)
+    os = models.CharField(max_length=200, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    latitude = models.CharField(max_length=200, blank=True, null=True)
+    longitude = models.CharField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     active = models.BooleanField(default=True)
 
 
 class PaymentPlanType(models.Model):
     type = models.CharField()
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     free_trial = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)

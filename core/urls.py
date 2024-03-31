@@ -14,33 +14,12 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.urls import path, include
 from django.contrib import admin
-# IMPORTEI A VIEWS
-from findme import views
 
-# API
-#from rest_framework import routers
-from api.rotas import router
-from api.viewset import user_filter
+from findme.urls import urlpatters
+
 
 urlpatterns = [
-    #API
-    #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^api/', include(router.urls)),
-    url(r'^api/search/(?P<username>\w+)/$', user_filter),
-    
-
-    #html
-    url(r'^$', 'django.contrib.auth.views.login', 
-        {'template_name': 'login/login.html'}, name='login1'),
-
-    url(r'cadastra-se/', views.register, name='register'),
-    url(r'sair/', views.user_logout, name='logout'),
-    url(r'^painel/', views.painel, name='painel'),
-    url(r'^map/', views.map, name='map'),
-    url(r'^atualizar/(?P<id>\d+)/$', views.user_update, name='atualizar'),
-    url(r'longitude/', views.longitude, name="longitude"),
-    url(r'latitude/', views.latitude, name="latitude"),
-    url(r'^admin/', admin.site.urls),
+    path("api/", include(urlpatters))
 ]

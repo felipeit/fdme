@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "fdme"
+version = "0.1.0"
+description = "this project was developed during the course completion period (TCC)."
+authors = ["Felipe Silva <felipe.it99@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^5.0.3"
+djangorestframework = "^3.15.1"
+channels = "^4.0.0"
+redis = "^5.0.3"
+drf-yasg = "^1.21.7"
+pytest = "^8.1.1"
+pytest-asyncio = "^0.23.6"
+python-decouple = "^3.8"
+drf-spectacular = "^0.27.1"
+django-cors-headers = "^4.3.1"
+psycopg2-binary = "^2.9.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

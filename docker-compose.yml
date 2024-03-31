@@ -4,30 +4,41 @@ services:
         container_name: rabbitmq
         ports:
             - "5672:5672"
+    cache:
+        image: redis:6.2-alpine
+        restart: always
+        env_file: .env
+        ports:
+            - '6379:6379'
+        command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+        volumes: 
+            - /opt/applications/data_persistence/database/cache:/data
     database:
         image: postgres:15.0
         container_name: database
         environment:
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=postgres
         restart: always
         volumes:
             - /opt/applications/data_persistence/database/db:/var/lib/postgresql/data
         ports:
-            - "5432:5432"
+            - "5433:5433"
     api:
         build: .
         container_name: api
         env_file: .env
+        restart: "on-failure"
         # command: bash -c "python manage.py shell script/create_superuser.py && python manage.py runserver 0.0.0.0:8000"
         volumes:
             - .:/application
         depends_on:
             - database
-            - rabbitmq
+            # - rabbitmq
         links:
             - database
-            - rabbitmq
+            # - rabbitmq
         ports:
             - "8000:8000"
     dev_container:
@@ -38,10 +49,10 @@ services:
             - .:/application
         depends_on:
             - database
-            - rabbitmq
+            # - rabbitmq
         links:
             - database
-            - rabbitmq
+            # - rabbitmq
         expose:
             - "8000"
     celery:
@@ -50,7 +61,7 @@ services:
             context: .
             dockerfile: Dockerfile
         volumes:
-            - .:/application
+            - /opt/applications/data_persistence/database/works:/application
         depends_on:
             - rabbitmq
         command: celery -A core worker --loglevel=info

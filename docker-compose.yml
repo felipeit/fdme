@@ -1,7 +1,7 @@
 services:
     rabbitmq:
         image: "rabbitmq:3-management"
-        container_name: rabbitmq
+        container_name: rabbitmq_fdme
         ports:
             - "5672:5672"
     cache:
@@ -13,55 +13,62 @@ services:
         command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
         volumes: 
             - /opt/applications/data_persistence/database/cache:/data
-    database:
-        image: postgres:15.0
-        container_name: database
+    db:
+        image: postgres
+        container_name: db_fdme
+        # env_file: .env
         environment:
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=postgres
-            - POSTGRES_DB=postgres
+            - POSTGRES_DB=fdme
+            - POSTGRES_USER=fdme
+            - POSTGRES_PASSWORD=fdme
+            - POSTGRES_HOST_AUTH_METHOD=md5
         restart: always
+        ports:
+            - "5432:5432"
         volumes:
             - /opt/applications/data_persistence/database/db:/var/lib/postgresql/data
+    adminer:
+        image: adminer
+        restart: always
         ports:
-            - "5433:5433"
+            - 8080:8080
     api:
         build: .
-        container_name: api
+        container_name: api_fdme
         env_file: .env
         restart: "on-failure"
         # command: bash -c "python manage.py shell script/create_superuser.py && python manage.py runserver 0.0.0.0:8000"
         volumes:
             - .:/application
         depends_on:
-            - database
-            # - rabbitmq
+            - db
+            - rabbitmq
         links:
-            - database
-            # - rabbitmq
+            - db
+            - rabbitmq
         ports:
             - "8000:8000"
     dev_container:
         build: .
-        container_name: app
+        container_name: app_fdme
         env_file: .env
         volumes:
             - .:/application
         depends_on:
-            - database
-            # - rabbitmq
+            - db
+            - rabbitmq
         links:
-            - database
-            # - rabbitmq
+            - db
+            - rabbitmq
         expose:
             - "8000"
-    celery:
-        container_name: celery
-        build:
-            context: .
-            dockerfile: Dockerfile
-        volumes:
-            - /opt/applications/data_persistence/database/works:/application
-        depends_on:
-            - rabbitmq
-        command: celery -A core worker --loglevel=info
+    # celery:
+    #     container_name: celery
+    #     build:
+    #         context: .
+    #         dockerfile: Dockerfile
+    #     volumes:
+    #         - /opt/applications/data_persistence/database/works:/application
+    #     depends_on:
+    #         - rabbitmq
+    #     command: celery -A core worker --loglevel=info

@@ -1,7 +1,7 @@
 python==3.10
 Django==5.0.3
 djangorestframework==3.15.1
-channels = 'channels[daphne]'
+channels=='channels[daphne]'
 redis==5.0.3
 drf-yasg==1.21.7
 pytest==8.1.1

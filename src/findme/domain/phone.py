@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from findme.domain.user import User
+from src.findme.domain.user import User
 
 
 @dataclass
@@ -19,7 +19,7 @@ class PhoneBase:
 
 
 class Phone:
-    def __int__(self, phone: PhoneBase) -> None:
+    async def __init__(self, phone: PhoneBase) -> None:
         self.__id = phone.id
         self.__phone_number = phone.phone_number
         self.__imei = phone.imei
@@ -33,5 +33,5 @@ class Phone:
         self.__active = phone.active
 
     @property
-    def latitude(self) -> float:
+    async def latitude(self) -> float:
         return self.__latitude

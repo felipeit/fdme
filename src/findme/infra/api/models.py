@@ -24,7 +24,7 @@ class User(models.Model):
 
 class Phone(models.Model):
     id = models.UUIDField(primary_key=True)
-    phone_number = models.CharField(blank=False, null=False)
+    phone_number = models.CharField(max_length=11, blank=False, null=False)
     imei = models.CharField(max_length=15, blank=False, null=False)
     model = models.CharField(max_length=200, blank=True, null=True)
     os = models.CharField(max_length=200, blank=True, null=True)
@@ -37,7 +37,12 @@ class Phone(models.Model):
 
 
 class PaymentPlanType(models.Model):
-    type = models.CharField()
+    TYPE_CHOICES = (
+        ('free', 1),
+        ('trial', 2),
+        ('premium', 3)
+    )
+    type = models.CharField(max_length=200, choices=TYPE_CHOICES, default='free')
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     free_trial = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now=True)

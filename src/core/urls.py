@@ -17,7 +17,7 @@ Including another URLconf
 from django.urls import path, include
 from django.contrib import admin
 
-from findme.urls import urlpatters
+from src.findme.infra.api.urls import urlpatters
 
 
 urlpatterns = [

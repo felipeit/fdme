@@ -10,22 +10,27 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
+import environ
 from pathlib import Path
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-from decouple import config
+#from decouple import config
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-vwvilq6ko9--vq9@j*oh06z+a#=*f+8r#k61(1d_hy=eq1q%0o'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -33,17 +38,21 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'channels',
+    
+    # app
+    'src.findme',
+
+    # library
     'rest_framework',
     'drf_spectacular',
     'corsheaders',
-    'findme',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +69,7 @@ MIDDLEWARE = [
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-ROOT_URLCONF = 'core.urls'
+ROOT_URLCONF = 'src.core.urls'
 
 TEMPLATES = [
     {
@@ -78,32 +87,39 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'core.wsgi.application'
+WSGI_APPLICATION = 'src.core.wsgi.application'
+ASGI_APPLICATION = 'src.core.asgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': env('POSTGRES_DB'),
+#         'USER': env('POSTGRES_USER'),
+#         'PASSWORD': env('POSTGRES_PASSWORD'),
+#         'HOST': '172.27.0.2',
+#         'PORT': env('POSTGRES_PORT', default='5432'),
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DATABASE_NAME'),
-        'USER': config('DATABASE_USER'),
-        'PASSWORD': config('DATABASE_PASSWORD'),
-        'HOST': config('DATABASE_HOST'),
-        'PORT': config('DATABASE_PORT', default='5433'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'fdme',
     }
 }
 
 # Celery settings
 # https://github.com/celery/celery
-CELERY_BROKER_URL = config(
-    'CELERY_BROKER_URL', 'amqp://guest:guest@localhost:5672//')
-CELERY_ENABLE_UTC = config('CELERY_ENABLE_UTC', False)
+CELERY_BROKER_URL = env(
+    'CELERY_BROKER_URL', default='amqp://guest:guest@localhost:5672//')
+CELERY_ENABLE_UTC = env('CELERY_ENABLE_UTC', default=False)
 # Custom Celery  settings
-CELERY_MAX_RETRIES = config('CELERY_MAX_RETRIES', 5)
-CELERY_DEFAULT_RETRY_DELAY = config('CELERY_DEFAULT_RETRY_DELAY', 5)
-CELERY_DEFAULT_ASYNC_DELAY = config('CELERY_DEFAULT_ASYNC_DELAY', 5)
+CELERY_MAX_RETRIES = env('CELERY_MAX_RETRIES', default=5)
+CELERY_DEFAULT_RETRY_DELAY = env('CELERY_DEFAULT_RETRY_DELAY', default=5)
+CELERY_DEFAULT_ASYNC_DELAY = env('CELERY_DEFAULT_ASYNC_DELAY', default=5)
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'API',
@@ -165,12 +181,19 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+REDIS_HOST = env('REDIS_HOST')
+REDIS_PORT = env('REDIS_PORT', cast=int)
+REDIS_PASSWORD = env('REDIS_PASSWORD')
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [(config('REDIS_HOST'), config('REDIS_PORT', cast=int))],
+            'hosts': [f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0"],
         },
     },
 }
+
+# Pytest
+# https://pytest-django.readthedocs.io/en/latest/faq.html#how-can-i-use-manage-py-test-with-pytest-django
+TEST_RUNNER = 'src.findme.infra.api.management.commands.pytest_to_test.PytestTestRunner'

@@ -3,8 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import mixins, status
 from rest_framework.response import Response
 
-from findme.application.register_user import Input, RegisterUser
-from findme.models import User
+from src.findme.application.register_user import Input, RegisterUser
+from src.findme.infra.api.models import User
 
 class UserViewSet(GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin):
     queryset = User.objects.all()

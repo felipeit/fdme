@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 from typing import Any, Protocol
 from uuid import UUID
-from findme.domain.user import User
-from findme.models import Phone
+from src.findme.domain.user import User
+from src.findme.infra.api.models import Phone
 
 @dataclass
 class Input:

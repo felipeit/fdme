@@ -29,6 +29,6 @@ jobs:
 
       - name: Deploy with Docker Compose & Executing Tests
         run: |
-          docker-compose down
+          docker-compose -f docker-compose-cicd.yml down
           docker-compose -f docker-compose-cicd.yml up -d
           docker-compose exec api python manage.py test

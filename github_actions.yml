@@ -1,14 +1,4 @@
 services:
-    rabbitmq:
-        image: "rabbitmq:3-management"
-        container_name: rabbitmq_fdme
-        ports:
-            - "5672:5672"
-        environment:
-            - CELERY_BROKER_URL=rabbitmq
-            - CELERY_ENABLE_UTC=False
-            - CELERY_DEFAULT_RETRY_DELAY=5
-            - CELERY_DEFAULT_ASYNC_DELAY=5
     cache:
         image: redis:6.2-alpine
         restart: always
@@ -52,21 +42,6 @@ services:
             - rabbitmq
         ports:
             - "8000:8000"
-        environment:
-            - SECRET_KEY=123asd123
-    dev_container:
-        build: .
-        container_name: app_fdme
-        volumes:
-            - .:/application
-        depends_on:
-            - db
-            - rabbitmq
-        links:
-            - db
-            - rabbitmq
-        expose:
-            - "8000"
         environment:
             - SECRET_KEY=123asd123
     # celery:

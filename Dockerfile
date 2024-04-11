@@ -36,6 +36,7 @@ WORKDIR /application
 
 COPY pyproject.toml .
 COPY poetry.lock .
+COPY env_example .env
 
 RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction

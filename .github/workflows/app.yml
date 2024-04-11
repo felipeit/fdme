@@ -24,8 +24,8 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker-compose build
-          docker-compose push
+          docker-compose -f docker-compose-cicd.yml build
+          docker-compose -f docker-compose-cicd.yml push
 
       - name: Deploy with Docker Compose & Executing Tests
         run: |

@@ -14,30 +14,21 @@ services:
         volumes: 
             - /opt/applications/data_persistence/database/cache:/data
     db:
-        image: postgres
+        image: postgres:latest
         container_name: db_fdme
-        # env_file: .env
-        environment:
-            - POSTGRES_DB=fdme
-            - POSTGRES_USER=fdme
-            - POSTGRES_PASSWORD=fdme
-            - POSTGRES_HOST_AUTH_METHOD=md5
+        env_file: .env
+
         restart: always
         ports:
             - "5432:5432"
         volumes:
             - /opt/applications/data_persistence/database/db:/var/lib/postgresql/data
-    adminer:
-        image: adminer
-        restart: always
-        ports:
-            - 8080:8080
     api:
         build: .
         container_name: api_fdme
         env_file: .env
         restart: "on-failure"
-        # command: bash -c "python manage.py shell script/create_superuser.py && python manage.py runserver 0.0.0.0:8000"
+        command: python manage.py runserver 0.0.0.0:8000
         volumes:
             - .:/application
         depends_on:

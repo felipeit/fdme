@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import Any, Protocol
 from uuid import UUID
 from src.findme.domain.user import User
-from src.findme.infra.api.models import Phone
+from src.findme.infra.orm.phone_models import Phone
 
 @dataclass
 class Input:
@@ -33,10 +33,10 @@ class UserDb(Protocol):  # Persiste
         ...
 
 class RegisterUser:
-    # def __init__(self, user_db: UserDb) -> None:
-    #     self._db = user_db
+    def __init__(self, user_db: UserDb) -> None:
+        self._db = user_db
 
-    async def execute(self, input: 'Input') -> OutputSuccess | OutputError:
+    def execute(self, input: 'Input') -> OutputSuccess | OutputError:
         user = User(
             id=input.id,
             first_name=input.first_name,
@@ -49,7 +49,7 @@ class RegisterUser:
             phone_number=input.phone_number,
             related_phone=input.related_phone,
         )
-        if not user.errors:
-            self._db.create_user(user)
-            return OutputSuccess(id=user.id)
-        return OutputError(errors=[str(e) for e in user.errors])
+    
+        self._db.create_user(user)
+        return OutputSuccess(id=user.id)
+    #return OutputError(errors=[str(e) for e in user.errors])

@@ -12,7 +12,6 @@ services:
     cache:
         image: redis:6.2-alpine
         restart: always
-        env_file: .env
         ports:
             - '6379:6379'
         command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
@@ -25,8 +24,6 @@ services:
     db:
         image: postgres:latest
         container_name: db_fdme
-        env_file: .env
-
         restart: always
         ports:
             - "5432:5432"
@@ -43,7 +40,6 @@ services:
     api:
         build: .
         container_name: api_fdme
-        env_file: .env
         restart: "on-failure"
         command: python manage.py runserver 0.0.0.0:8000
         volumes:
@@ -61,7 +57,6 @@ services:
     dev_container:
         build: .
         container_name: app_fdme
-        env_file: .env | secrets
         volumes:
             - .:/application
         depends_on:

@@ -34,7 +34,7 @@ RUN mkdir /application
 
 WORKDIR /application
 
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml poetry.lock docker-compose.yml ./
 COPY env_example .env
 
 RUN poetry config virtualenvs.create false \

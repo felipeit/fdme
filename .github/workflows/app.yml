@@ -2,9 +2,9 @@ name: Docker Compose CI/CD
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -13,8 +13,25 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-      - name: Set environment variables
-        run: env
+
+      - name: Set Secrets and Environment Variables
+        run: |
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
+          echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> $GITHUB_ENV
+          echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> $GITHUB_ENV
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> $GITHUB_ENV
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> $GITHUB_ENV
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
+          echo "POSTGRES_HOST_AUTH_METHOD=${{ secrets.POSTGRES_HOST_AUTH_METHOD }}" >> $GITHUB_ENV
+          echo "POSTGRES_INITDB_ARGS=${{ secrets.POSTGRES_INITDB_ARGS }}" >> $GITHUB_ENV
+          echo "CELERY_BROKER_URL=${{ secrets.CELERY_BROKER_URL }}" >> $GITHUB_ENV
+          echo "CELERY_ENABLE_UTC=${{ secrets.CELERY_ENABLE_UTC }}" >> $GITHUB_ENV
+          echo "CELERY_DEFAULT_RETRY_DELAY=${{ secrets.CELERY_DEFAULT_RETRY_DELAY }}" >> $GITHUB_ENV
+          echo "CELERY_DEFAULT_ASYNC_DELAY=${{ secrets.CELERY_DEFAULT_ASYNC_DELAY }}" >> $GITHUB_ENV
+          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> $GITHUB_ENV
+          echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> $GITHUB_ENV
+          echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> $GITHUB_ENV
+
       - name: Install Docker
         run: |
           sudo apt-get update

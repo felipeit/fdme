@@ -1,9 +1,11 @@
 name: Docker Compose CI/CD
+
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
+
 jobs:
   build:
     runs-on: ubuntu-latest

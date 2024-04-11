@@ -42,7 +42,7 @@ services:
     dev_container:
         build: .
         container_name: app_fdme
-        env_file: .env | secrets
+        env_file: .env
         volumes:
             - .:/application
         depends_on:

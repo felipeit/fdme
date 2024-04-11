@@ -11,7 +11,6 @@ async def test_my_consumer(communicator_fixture) -> None:
         
         # act
         await communicator_fixture.send_json_to({"hello": "world"})
-        #NOTE: Na documentação não está assim. Foi a unica forma que achei de ter acesso ao receive.
         response = communicator_fixture.input_queue._queue[0]
         
         # assert

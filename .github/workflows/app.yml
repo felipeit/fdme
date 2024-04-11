@@ -24,11 +24,11 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker-compose -f docker-compose-cicd.yml build
-          docker-compose -f docker-compose-cicd.yml push
+          docker-compose -f github_actions.yml build
+          docker-compose -f github_actions.yml push
 
       - name: Deploy with Docker Compose & Executing Tests
         run: |
-          docker-compose -f docker-compose-cicd.yml down
-          docker-compose -f docker-compose-cicd.yml up -d
+          docker-compose -f github_actions.yml down
+          docker-compose -f github_actions.yml up -d
           docker-compose exec api python manage.py test

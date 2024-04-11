@@ -12,7 +12,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
+      - name: Set environment variables
+        run: env
       - name: Install Docker
         run: |
           sudo apt-get update

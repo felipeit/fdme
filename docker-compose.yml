@@ -1,9 +1,4 @@
 services:
-    rabbitmq:
-        image: "rabbitmq:3-management"
-        container_name: rabbitmq_fdme
-        ports:
-            - "5672:5672"
     cache:
         image: redis:6.2-alpine
         restart: always
@@ -17,7 +12,6 @@ services:
         image: postgres:latest
         container_name: db_fdme
         env_file: .env
-
         restart: always
         ports:
             - "5432:5432"
@@ -33,10 +27,8 @@ services:
             - .:/application
         depends_on:
             - db
-            - rabbitmq
         links:
             - db
-            - rabbitmq
         ports:
             - "8000:8000"
     dev_container:
@@ -47,19 +39,7 @@ services:
             - .:/application
         depends_on:
             - db
-            - rabbitmq
         links:
             - db
-            - rabbitmq
         expose:
-            - "8000"
-    # celery:
-    #     container_name: celery
-    #     build:
-    #         context: .
-    #         dockerfile: Dockerfile
-    #     volumes:
-    #         - /opt/applications/data_persistence/database/works:/application
-    #     depends_on:
-    #         - rabbitmq
-    #     command: celery -A core worker --loglevel=info
+            - "8080"

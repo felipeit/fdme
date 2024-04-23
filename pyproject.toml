@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "this project was developed during the course completion period (TCC)."
 authors = ["Felipe Silva <felipe.it99@gmail.com>"]
 readme = "README.md"
+packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -21,6 +22,7 @@ psycopg2-binary = "^2.9.9"
 django-environ = "^0.11.2"
 channels-redis = "^4.2.0"
 djangorestframework-simplejwt = "^5.3.1"
+django-allauth = "^0.61.1"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "src.core.settings"

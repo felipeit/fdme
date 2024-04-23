@@ -44,13 +44,3 @@ services:
             - "8000:8000"
         environment:
             - SECRET_KEY=123asd123
-    # celery:
-    #     container_name: celery
-    #     build:
-    #         context: .
-    #         dockerfile: Dockerfile
-    #     volumes:
-    #         - /opt/applications/data_persistence/database/works:/application
-    #     depends_on:
-    #         - rabbitmq
-    #     command: celery -A core worker --loglevel=info

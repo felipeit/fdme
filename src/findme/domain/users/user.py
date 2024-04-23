@@ -1,10 +1,10 @@
 from typing import Any
 from django.forms import ValidationError
-# from src.findme.application.register_user import Input
+from src.findme.domain.users.dto import UserBase
 
 
 class User:
-    def __init__(self, user: Any) -> None:
+    def __init__(self, user: UserBase) -> None:
         self.__id = user.id
         self.__first_name = user.first_name
         self.__last_name = user.last_name

@@ -1,6 +1,6 @@
 import pytest
 from django.forms import ValidationError
-from src.findme.domain.user import User
+from src.findme.domain.users.user import User
 
 #from src.findme.application.register_user import Input
 

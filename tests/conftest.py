@@ -1,15 +1,15 @@
 import pytest
-from uuid import uuid1
+from uuid import uuid4
 
 from channels.testing import WebsocketCommunicator
-from src.findme.application.register_user import Input
+from src.findme.application.users_usecase.pre_register_user import Input
 from src.findme.infra.websocket.consumers import GeolocationConsumer
 
 # TODO: https://channels.readthedocs.io/en/latest/topics/testing.html
 @pytest.fixture
 async def user() -> Input:
     return Input(
-        id=uuid1(),
+        id=uuid4(),
         first_name="Elon",
         last_name="musk",
         email="test@test.com",

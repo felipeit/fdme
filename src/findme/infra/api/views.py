@@ -1,12 +1,12 @@
-from uuid import uuid1
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import mixins, status
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
-from src.findme.application.register_user import Input, RegisterUser, OutputError, OutputSuccess
-from src.findme.infra.orm import user_models
-from src.findme.infra.orm.user_models import User
+
+from src.findme.application.users_usecase.dto import Input
+from src.findme.application.users_usecase.register_user import RegisterUser
+from src.findme.infra.orm.models import User
 from src.findme.infra.api.serializers import UserSerializer
 
 class UserViewSet(GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin):
@@ -20,7 +20,6 @@ class UserViewSet(GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin
     )
     def create(self, request, *args, **kwargs) -> Response:
         input = Input(
-            id=uuid1(),
             first_name=request.data.get('first_name'),
             last_name=request.data.get('last_name'),
             email=request.data.get('email'),
@@ -31,6 +30,6 @@ class UserViewSet(GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin
             phone_number=request.data.get('phone_number'),
             related_phone=request.data.get('related_phone')
         )
-        usecase = RegisterUser(user_db=user_models.User)
+        usecase = RegisterUser(user_db=User)
         output = usecase.execute(input)
         return Response(output, status=status.HTTP_201_CREATED)

@@ -1,7 +1,7 @@
 from django.contrib import admin
-from src.findme.infra.orm.user_models import User
-from src.findme.infra.orm.phone_models import Phone
-from src.findme.infra.orm.paymentplantype_models import PaymentPlanType
+from src.findme.infra.orm.models import User
+from src.findme.infra.orm.models import Phone
+from src.findme.infra.orm.models import PaymentPlanType
 
 
 admin.site.register(User)

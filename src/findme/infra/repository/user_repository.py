@@ -1,6 +1,6 @@
 from typing import Any
-from src.findme.domain.user import User
-from src.findme.infra.orm.user_models import User as UserModel
+from src.findme.domain.users.user import User
+from src.findme.infra.orm.models import User as UserModel
 from django.db import transaction
 
 class RegisterUserRepository:

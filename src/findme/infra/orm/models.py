@@ -6,12 +6,12 @@ class User(models.Model):
     first_name = models.CharField(max_length=200, blank=False, null=False)
     last_name = models.CharField(max_length=200, blank=False, null=False)
     email = models.EmailField(blank=False, null=False)
-    cpf = models.CharField(max_length=11)
-    cnpj = models.CharField(max_length=14)
-    address = models.CharField(max_length=200)
-    phone_number = models.CharField(max_length=12)
-    active = models.BooleanField(default=True)
-    age = models.IntegerField()
+    cpf = models.CharField(max_length=11, blank=True, null=True)
+    cnpj = models.CharField(max_length=14, blank=True, null=True)
+    address = models.CharField(max_length=200, blank=True, null=True)
+    phone_number = models.CharField(max_length=12, blank=True, null=True)
+    active = models.BooleanField(default=False)
+    age = models.IntegerField(null=True)
 
 
 class Phone(models.Model):

@@ -27,3 +27,17 @@ class UserBase:
         PyValidatron(value=self.address, type=ValidationType.STRING, min=1, max=100, blank=True)
         PyValidatron(value=self.phone_number, type=ValidationType.STRING, min=11, max=11, blank=True)
         PyValidatron(value=self.age, type=ValidationType.INT, min=1, max=100)
+
+
+@dataclass
+class PreUserBase:
+    id: UUID
+    first_name: str
+    last_name: str
+    email: str
+
+
+    def __post_init__(self) -> None:
+        PyValidatron(value=self.first_name, type=ValidationType.STRING, min=1, max=100)
+        PyValidatron(value=self.last_name, type=ValidationType.STRING, min=1, max=100)
+        PyValidatron(value=self.email, type=ValidationType.EMAIL, min=1, max=100)

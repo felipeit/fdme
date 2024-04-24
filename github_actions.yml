@@ -36,10 +36,8 @@ services:
             - .:/application
         depends_on:
             - db
-            - rabbitmq
         links:
             - db
-            - rabbitmq
         ports:
             - "8000:8000"
         environment:

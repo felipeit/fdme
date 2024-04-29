@@ -1,7 +1,6 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
-@dataclass
-class DeviceBase:
+class DeviceBase(BaseModel):
     latitude: float
     longitude: float

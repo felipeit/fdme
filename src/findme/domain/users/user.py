@@ -16,6 +16,7 @@ class User:
         self.__phone_number = getattr(user, 'phone_number', None)
         self.__related_phone = getattr(user, 'related_phone', None)
         self.__age = getattr(user, 'age', None)
+        self.__events = ["pre-register"]
 
         # Validações adicionais
         if hasattr(user, 'age') and user.age < 18:
@@ -61,3 +62,6 @@ class User:
     @property
     def email(self) -> str:
         return self.__email
+    
+    def get_events(self) -> list[str]:
+        return self.__events

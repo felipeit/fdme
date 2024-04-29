@@ -9,7 +9,6 @@ class Phone:
         self.__imei = phone.imei
         self.__model = phone.model
         self.__os = phone.os
-        self.__user = phone.user
         self.__latitude = phone.latitude
         self.__longitude = phone.longitude
         self.__created_at = phone.created_at

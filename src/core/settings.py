@@ -34,7 +34,6 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -229,3 +228,22 @@ CHANNEL_LAYERS = {
 # Pytest
 # https://pytest-django.readthedocs.io/en/latest/faq.html#how-can-i-use-manage-py-test-with-pytest-django
 TEST_RUNNER = 'src.findme.infra.api.management.commands.pytest_to_test.PytestTestRunner'
+
+# Celery settings
+# https://github.com/celery/celery
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='amqp://guest:guest@localhost:5672//')
+CELERY_ENABLE_UTC = env('CELERY_ENABLE_UTC', default=False)
+# Custom Celery  settings
+CELERY_DEFAULT_RETRY_DELAY = env('CELERY_DEFAULT_RETRY_DELAY', default=5)
+CELERY_DEFAULT_ASYNC_DELAY = env('CELERY_DEFAULT_ASYNC_DELAY', default=5)
+
+# Email settings
+# https://docs.djangoproject.com/en/5.0/topics/email/
+EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = env('EMAIL_HOST', default='smtp.sendgrid.net')
+EMAIL_PORT = env('EMAIL_PORT', default=587)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='apikey')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='your-password')
+EMAIL_USE_TLS = env('EMAIL_USE_TLS', default=False)
+EMAIL_USE_SSL = env('EMAIL_USE_SSL', default=False)
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default=EMAIL_HOST_USER)

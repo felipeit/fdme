@@ -1,4 +1,12 @@
 services:
+    rabbitmq:
+        image: "rabbitmq:3-management"
+        container_name: "queue_fdme"
+        env_file: .env
+        ports:
+            - "15672:15672"
+            - "5672:5672"
+   
     cache:
         image: redis:6.2-alpine
         restart: always
@@ -22,7 +30,7 @@ services:
         container_name: api_fdme
         env_file: .env
         restart: "on-failure"
-        command: python manage.py runserver 0.0.0.0:8000
+        command: python manage.py celery -A core worker -B -l info --detach & python manage.py runserver 0.0.0.0:8000
         volumes:
             - .:/application
         depends_on:
@@ -35,6 +43,7 @@ services:
         build: .
         container_name: app_fdme
         env_file: .env
+        command: python manage.py celery -A core worker -B -l info --detach
         volumes:
             - .:/application
         depends_on:
